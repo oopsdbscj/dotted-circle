@@ -13,106 +13,104 @@
 <body>
 <canvas id="canvas" width="50px" height="50px"></canvas>
 <script>
-    var canvas = document.getElementById("canvas");
-    var isplay = 0;
-    canvas.addEventListener('click', clearOrSatrtArcAnimation, false);
-    var ctx = canvas.getContext("2d");
-    //获取canvas中心坐标
-    var center_arc = {};
-    var center_dot = {};
-    var center_dot_radius = 2;
-    var arcColor = "#F2F2F2";
-    var dotColor = "#F2F2F2";
-    var arcWidth = 2;
-    var arcRadius1st = 10;
-    var arcRadius2nd = 16;
-    var arcCount = 3;
-    var interval_dot;
-    var interval_1stArc;
-    var interval_2ndArc;
-    var timeGap = 500;
-    var canvasBgColor = "black";
+    drawVoiceBubble("canvas","#9C9C9C","#9C9C9C","#F2F2F2")
+    function drawVoiceBubble(canvasid,dotColor,arcColor,canvasBgColor) {
+        var canvas = document.getElementById(canvasid);
+        var isplay = 0;
+        canvas.addEventListener('click', clearOrSatrtArcAnimation, false);
+        var ctx = canvas.getContext("2d");
+        //获取canvas中心坐标
+        var center_arc = {};
+        var center_dot = {};
+        var center_dot_radius = 2;
+        var arcColor = arcColor;
+        var dotColor = dotColor;
+        var arcWidth = 2;
+        var arcRadius1st = 10;
+        var arcRadius2nd = 16;
+        var arcCount = 3;
+        var interval_dot;
+        var canvasBgColor = canvasBgColor;
 
-    var cw = canvas.width;
-    var ch = canvas.height;
-    center_arc.x = 0;
-    center_arc.y = ch / 2;
-    center_dot.x = 0 + center_dot_radius;
-    center_dot.y = ch / 2;
-    // drawDot(ctx,center_dot,center_dot_radius,false,"red");
-    // drawArc(ctx,center_arc,12,Math.PI / 4,2 * Math.PI - Math.PI / 4,3);
-    // drawArc(ctx,center_arc,18,Math.PI / 4,2 * Math.PI - Math.PI / 4,3);
-    // drawOnlyDot();
-    // drawOnlyDotAnd1stArc();
-    // drawOnlyDotAnd2Arcs();
-    animationArc();
-    isplay = 1;
+        var cw = canvas.width;
+        var ch = canvas.height;
+        center_arc.x = 0;
+        center_arc.y = ch / 2;
+        center_dot.x = 0 + center_dot_radius;
+        center_dot.y = ch / 2;
+        // drawDot(ctx,center_dot,center_dot_radius,false,"red");
+        // drawArc(ctx,center_arc,12,Math.PI / 4,2 * Math.PI - Math.PI / 4,3);
+        // drawArc(ctx,center_arc,18,Math.PI / 4,2 * Math.PI - Math.PI / 4,3);
+        // drawOnlyDot();
+        // drawOnlyDotAnd1stArc();
+        // drawOnlyDotAnd2Arcs();
+        animationArc();
+        isplay = 1;
 
-    function animationArc() {
-        interval_dot = setInterval(function () {
-            // drawOnlyDotAnd2Arcs();
-            clearCanvas();
-            // alert(arcCount);
-            if(arcCount == 3){
-                console.log(3)
-                drawOnlyDot();
-            }else if(arcCount == 2){
-                console.log(2)
-                drawOnlyDotAnd1stArc();
-            }else if(arcCount == 1){
-                console.log(1)
-                drawOnlyDotAnd2Arcs();
-                arcCount = 4;
-            }
-            arcCount--;
-        },350)
-    }
-
-    /**
-     * 停止播放动画
-     */
-    function clearOrSatrtArcAnimation() {
-        if(isplay){
-            clearInterval(interval_dot);
-            drawOnlyDotAnd2Arcs();
-            isplay = 0;
-        }else{
-            animationArc();
-            isplay = 1;
+        function animationArc() {
+            interval_dot = setInterval(function () {
+                clearCanvas();
+                if(arcCount == 3){
+                    console.log(3)
+                    drawOnlyDot();
+                }else if(arcCount == 2){
+                    console.log(2)
+                    drawOnlyDotAnd1stArc();
+                }else if(arcCount == 1){
+                    console.log(1)
+                    drawOnlyDotAnd2Arcs();
+                    arcCount = 4;
+                }
+                arcCount--;
+            },350)
         }
 
-    }
+        /**
+         * 停止播放动画
+         */
+        function clearOrSatrtArcAnimation() {
+            if(isplay){
+                clearInterval(interval_dot);
+                drawOnlyDotAnd2Arcs();
+                isplay = 0;
+            }else{
+                animationArc();
+                isplay = 1;
+            }
 
-    /**
-     *重置canvas
-     */
-    function clearCanvas() {
-        ctx.fillStyle = canvasBgColor;
-        ctx.fillRect(0,0,cw,ch);
-    }
+        }
 
-    /**
-     * 只画中心圆
-     */
-    function drawOnlyDot() {
-        drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
-    }
+        /**
+         *重置canvas
+         */
+        function clearCanvas() {
+            ctx.fillStyle = canvasBgColor;
+            ctx.fillRect(0,0,cw,ch);
+        }
 
-    /**
-     * 只画中心圆和第一个圆弧
-     */
-    function drawOnlyDotAnd1stArc() {
-        drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
-        drawArc(ctx, center_arc, arcRadius1st, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
-    }
+        /**
+         * 只画中心圆
+         */
+        function drawOnlyDot() {
+            drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
+        }
 
-    /**
-     * 画中心圆和2个圆弧
-     */
-    function drawOnlyDotAnd2Arcs() {
-        drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
-        drawArc(ctx, center_arc, arcRadius1st, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
-        drawArc(ctx, center_arc, arcRadius2nd, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
+        /**
+         * 只画中心圆和第一个圆弧
+         */
+        function drawOnlyDotAnd1stArc() {
+            drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
+            drawArc(ctx, center_arc, arcRadius1st, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
+        }
+
+        /**
+         * 画中心圆和2个圆弧
+         */
+        function drawOnlyDotAnd2Arcs() {
+            drawDot(ctx, center_dot, center_dot_radius, false, dotColor);
+            drawArc(ctx, center_arc, arcRadius1st, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
+            drawArc(ctx, center_arc, arcRadius2nd, Math.PI / 4, 2 * Math.PI - Math.PI / 4, arcWidth, arcColor);
+        }
     }
 </script>
 </body>
