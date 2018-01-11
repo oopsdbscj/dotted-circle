@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg)
+            }
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .center {
+            z-index: 99;
+            position: absolute;
+            text-align: center;
+            width: 200px;
+            height: 200px;
+            left: 50%;
+            top: 50%;
+            /*transform: translate(-50%, -50%);*/ /*使用transform会导致旋转时位置跑偏，改用margin-left，和margin-top*/
+            margin-left: -100px;
+            margin-top: -100px;
+            text-align: center;
+        }
+
+        #canvas {
+            position: absolute;
+            text-align: center;
+            /*background-color: #00d449;*/
+            width: 200px;
+            height: 200px;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            animation-name: rotate;
+            animation-duration: 5s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        .modal {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: #A0A0A0
+        }
+    </style>
+</head>
+<body>
+<div class="modal">
+    <div class="center">
+        <canvas id="canvas" width="200px" height="200px"></canvas>
+    </div>
+</div>
+<script>
+    drawDotRing("canvas");
+
+    function drawDotRing(canvasid) {
+        var canvas = document.getElementById(canvasid);
+        var ctx = canvas.getContext("2d");
+        //获取canvas中心坐标
+        var center = {};
+        var cw = canvas.width;
+        var ch = canvas.height;
+        console.log(cw + "==" + ch);
+        center.x = cw / 2;
+        center.y = ch / 2;
+        console.log(center.x + "__" + center.y);
+        var ring_radius = center.y - 20; //圆环半径
+        var dotRadius = 5;//圆环上的小圆半径
+        ctx.fillStyle = "#A0A0A0";
+        drawDot(ctx, center, ring_radius, true);
+        var angles = [];
+        for (i = 0; i < 22; i++) {
+            angles[i] = i * 6;
+        }
+        var cneters = [];
+        for (i = 0; i < angles.length; i++) {
+            cneters[i] = getRandomPointOnRadius(angles[i], center, ring_radius, false);
+            drawDot(ctx, cneters[i], dotRadius);
+        }
+    }
+
+    /**
+     *画圆，
+     * ctx,画布
+     * coords,圆心
+     * radius,半径
+     * ring ：false画实心圆，true画空心圆
+     */
+    function drawDot(ctx, coords, radius, ring) {
+        if (!ring) {
+            ctx.fillStyle = "white";
+        } else {
+            ctx.strokeStyle = "#A0A0A0";
+        }
+        ctx.beginPath();
+        ctx.arc(coords.x, coords.y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    /**
+     * 随机生成圆弧上面的实心圆
+     * @param an
+     * @param coords
+     * @param r
+     * @returns {*[]}
+     */
+    function getRandomPointOnRadius(an, coords, r) {
+        var x2 = coords.x + (r * 1) * Math.cos(an);
+        var y2 = coords.y + (r * 1) * Math.sin(an);
+        var cneter_p = {
+            x: x2,
+            y: y2
+        };
+        return cneter_p;
+    }
+</script>
+
+</body>
+</html>
