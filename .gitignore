@@ -7,6 +7,6 @@ target
 .classpath
 .DS_Store
 
-.idea/*
+.idea
 **/logs
 **/test/
